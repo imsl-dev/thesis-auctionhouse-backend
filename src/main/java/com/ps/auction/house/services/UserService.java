@@ -1,5 +1,6 @@
 package com.ps.auction.house.services;
 
+import com.ps.auction.house.models.entities.User;
 import com.ps.auction.house.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,8 +22,8 @@ public class UserService {
     private final UserRepository userRepository;
 
 
-    public String testMethod() {
-        return "Working as intended.";
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 //
 //    public Boolean saveUserImage(Long userId, MultipartFile imageFile) {

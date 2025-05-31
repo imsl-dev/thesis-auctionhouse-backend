@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Entity(name="users")
 @Data
-public class UserEntity {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,6 +17,8 @@ public class UserEntity {
     private String firstName;
 
     private String lastName;
+
+    private String email;
 
     private Role role;
 
@@ -27,6 +29,5 @@ public class UserEntity {
     private String district;
 
     private String imagePath;
-
 
 }
