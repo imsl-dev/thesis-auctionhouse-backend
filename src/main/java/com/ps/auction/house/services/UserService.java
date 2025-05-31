@@ -1,6 +1,8 @@
 package com.ps.auction.house.services;
 
+import com.ps.auction.house.dtos.UserPostDTO;
 import com.ps.auction.house.models.entities.User;
+import com.ps.auction.house.models.enums.Role;
 import com.ps.auction.house.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,29 +22,40 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final FileStorageService fileStorageService;
 
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
-//
-//    public Boolean saveUserImage(Long userId, MultipartFile imageFile) {
-//
-//        try {
-//            //create directory to save if it doesn't exist
-//            File dir = new File(uploadDir);
-//
-//            if (!dir.exists()) {dir.mkdirs();}
-//
-//            //create unique file name
-//
-//            String fileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
-//            Path filePath = Paths.get(uploadDir, fileName);
-//
-//            Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return true;
-//    }
+
+    public boolean isEmailAvailable(String email) {
+        User userWithEmail = userRepository.findByEmail(email);
+        if (userWithEmail != null) {
+            return false;
+        }
+        else return true;
+    }
+
+    public User postUser(UserPostDTO userDTO) throws IOException {
+        // save the image and get the file location
+        String location = fileStorageService.saveProfilePicture(userDTO.getProfilePicture(), userDTO.getLastName());
+
+
+        User newUser = new User();
+        newUser.setFirstName(userDTO.getFirstName());
+        newUser.setLastName((userDTO.getLastName()));
+        newUser.setEmail(userDTO.getEmail());
+        newUser.setAddress(userDTO.getAddress());
+        newUser.setDistrict(userDTO.getDistrict());
+        newUser.setRole(Role.BUYER);
+        newUser.setPhoneNumber(userDTO.getPhoneNumber());
+        newUser.setImagePath(location);
+
+        userRepository.save(newUser);
+        return newUser;
+
+    }
+
+
 }
