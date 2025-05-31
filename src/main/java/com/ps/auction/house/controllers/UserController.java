@@ -50,6 +50,7 @@ public class UserController {
         userDTO.setPassword(password);
         userDTO.setAddress(address);
         userDTO.setDistrict(district);
+
         userDTO.setProfilePicture(file);
         userDTO.setPhoneNumber(phoneNumber);
 

@@ -19,6 +19,11 @@ public class FileStorageService {
             Files.createDirectories(uploadPath);
         }
 
+        // If the file is null or empty, return the path to the default image
+        if (file == null || file.isEmpty()) {
+            return UPLOAD_DIR + "user.webp"; // default image
+        }
+
         // Create a unique filename using the original file extension
         String originalFilename = file.getOriginalFilename();
         String extension = "";
